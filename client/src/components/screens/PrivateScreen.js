@@ -26,10 +26,14 @@ const PrivateScreen = () => {
 
     fetchPrivateDate();
   }, []);
+
   return error ? (
     <span className="error-message">{error}</span>
   ) : (
-    <div>{privateData}</div>
+    <>
+      <div>This this the Private Page</div>
+      <div>This message is sent from back-end{privateData}</div>
+    </>
   );
 };
 

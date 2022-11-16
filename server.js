@@ -1,11 +1,16 @@
-require("dotenv").config({ path: "./config.env" });
-const express = require("express");
+import express from "express";
+import dotenv from "dotenv";
+
+import connectDB from "./config/db.js";
+import errorHandler from "./middleware/error.js";
+import privateRouter from "./routes/private.js";
+import authRouter from "./routes/auth.js";
+
 const app = express();
-const connectDB = require("./config/db");
-const errorHandler = require("./middleware/error");
 
+// configs
 connectDB();
-
+dotenv.config();
 app.use(express.json());
 
 app.get("/", (req, res, next) => {
@@ -13,14 +18,13 @@ app.get("/", (req, res, next) => {
 });
 
 // Connecting Routes
-app.use("/api/auth", require("./routes/auth"));
-app.use("/api/private", require("./routes/private"));
+app.use("/api/auth", authRouter);
+app.use("/api/private", privateRouter);
 
 // Error Handler Middleware
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-
 const server = app.listen(PORT, () =>
   console.log(`Sever running on port ${PORT}`)
 );

@@ -1,10 +1,11 @@
-const crypto = require("crypto");
-const ErrorResponse = require("../utils/errorResponse");
-const User = require("../models/User");
-const sendEmail = require("../utils/sendEmail");
+import crypto from "crypto";
+
+import ErrorResponse from "../utils/errorResponse.js";
+import User from "../models/User.js";
+import sendEmail from "../utils/sendEmail.js";
 
 // @desc    Login user
-exports.login = async (req, res, next) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   // Check if email and password is provided
@@ -34,7 +35,7 @@ exports.login = async (req, res, next) => {
 };
 
 // @desc    Register user
-exports.register = async (req, res, next) => {
+const register = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   try {
@@ -51,7 +52,7 @@ exports.register = async (req, res, next) => {
 };
 
 // @desc    Forgot Password Initialization
-exports.forgotPassword = async (req, res, next) => {
+const forgotPassword = async (req, res, next) => {
   // Send Email to email provided but first check if user exists
   const { email } = req.body;
 
@@ -101,7 +102,7 @@ exports.forgotPassword = async (req, res, next) => {
 };
 
 // @desc    Reset User Password
-exports.resetPassword = async (req, res, next) => {
+const resetPassword = async (req, res, next) => {
   // Compare token in URL params to hashed token
   const resetPasswordToken = crypto
     .createHash("sha256")
@@ -138,3 +139,5 @@ const sendToken = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
   res.status(statusCode).json({ sucess: true, token });
 };
+
+export { resetPassword, forgotPassword, login, register };
